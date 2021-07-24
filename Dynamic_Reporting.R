@@ -101,7 +101,7 @@ markdown_body1 <- paste(paste("This is a standardized report that analyses weekl
                               "and streaming requests. For more information on this see the following",
                               "[website](https://www.offiziellecharts.de/info/faq). As this is a ranked evaluation, a smaller rank",
                               "(i.e. closer to 1) indicates better performance than a larger rank."),"",
-                        "## Weekly Development in German Single Charts (Week Nr.`r format(Sys.Date(), '%W')`)",
+                        paste("## Weekly Development in German Single Charts (Week Nr.",format(Sys.Date(), '%W'),")"),
                         paste("For this week, the best performing single is `r chart_scrap$title[chart_scrap$current==1]`",
                               "by `r chart_scrap$artist[chart_scrap$current==1]`. The song has been in the charts for",
                               "`r chart_scrap$weeks_in_charts[chart_scrap$current==1]` weeks and was",
