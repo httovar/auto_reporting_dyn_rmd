@@ -55,7 +55,7 @@ chart_scrap <- chart_scrap%>%
 #This will saved a csv file for each scheduled iteration
 
 #First creating new folder in blogdown folder structure
-dir_path <- file.path("reporting_blogdown_page","content","post",
+dir_path <- file.path("auto_reporting_blogdown","content","post",
                       paste0(Sys.Date(),"_charts_report"))
 dir.create(dir_path)
 
