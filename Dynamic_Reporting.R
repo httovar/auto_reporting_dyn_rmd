@@ -7,7 +7,9 @@ library(tidyr)
 library(stringr)
 library(readr)
 
-setwd("C:/henning/Scripts/R_Scripts/Automated_Reporting_Proj/auto_reporting_dyn_rmd")
+#Setting working directory
+setwd(eval(parse(text = keyring::key_get("proj_wd"))))
+
 
 # Data Accessing Step ###################
 #Web scraping data with rvest
