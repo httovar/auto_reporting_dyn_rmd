@@ -172,7 +172,7 @@ code_chunk2 <- paste("```{r scatter plots, echo=FALSE}",
                                     scale_color_manual(values = c('#FF0000','#000000'))+
                                     theme_bw()",
                      "grid.arrange(current_v_last,last_v_peak, weeks_v_peak,week_v_current, nrow=2)",
-                     "``` ",sep = "\n")
+                     "``` ","",sep = "\n")
 
 markdown_body2 <- paste("The bar plots below show the number of songs a respective label or artists is able to place",
                         "in charts simultaneously. The following tables then drill down into this and show the exact",
