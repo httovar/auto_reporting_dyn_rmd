@@ -11,6 +11,7 @@ library(readr)
 # Data Accessing Step ###################
 #Web scraping data with rvest
 #german_charts_path <- "https://www.offiziellecharts.de/charts"
+
 #Had to choose specific date because complete data is not available on Saturday
 german_charts_path <- "https://www.offiziellecharts.de/charts/single/for-date-1626460842000"
 
@@ -230,3 +231,8 @@ complete_doc <- paste(yaml_header,code_chunk1,markdown_body1, code_chunk2, markd
 
 write(complete_doc, 
       paste0(dir_path,"/",Sys.Date(),"_charts_report.Rmd"))
+
+#Set wd to the working directory of the blogdown page. This is necessary for blogdown::build_site() to run properly
+setwd("auto_reporting_blogdown")
+source(file ="git_commands.R")
+
