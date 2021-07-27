@@ -1,0 +1,111 @@
+
+R version 3.6.3 (2020-02-29) -- "Holding the Windsock"
+Copyright (C) 2020 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # Set Up##############
+> library(dplyr)
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+> library(rvest)
+> library(xml2)
+> library(tibble)
+> library(tidyr)
+> library(stringr)
+> library(readr)
+
+Attaching package: 'readr'
+
+The following object is masked from 'package:rvest':
+
+    guess_encoding
+
+> 
+> 
+> # Data Accessing Step ###################
+> #Web scraping data with rvest
+> #german_charts_path <- "https://www.offiziellecharts.de/charts"
+> 
+> #Had to choose specific date because complete data is not available on Saturday
+> german_charts_path <- "https://www.offiziellecharts.de/charts/single/for-date-1626460842000"
+> 
+> de_page <- read_html(german_charts_path)
+> 
+> info <- c('this-week', 'last-week', 'info-artist', 'info-title', 'info-label')
+> chart_scrap <-  tibble(current = numeric(length = 100),
++                        last_week = numeric(length = 100),
++                        artist = character(length = 100),
++                        title = character(length = 100),
++                        label = character(length = 100))
+> 
+> 
+> for (i in 1:5){
++   chart_scrap[,i] <- de_page%>%
++     html_nodes("body")%>%
++     xml2::xml_find_all(paste0("//span[contains(@class, '", info[i], "')]"))%>% 
++     rvest::html_text2()
++ }
+> 
+> #Meta data that need a little more processing and can't be looped with the rest
+> other_meta <- c("weeks_in_charts", "peak_in_charts")
+> 
+> for(i in 1:2){
++   chart_scrap[other_meta[i]] <-  de_page %>%
++     html_nodes("body")%>%
++     xml2::xml_find_all(paste0("//span[contains(@class, 'plus-data')]"))%>% 
++     rvest::html_text2()%>%
++     .[seq(from=i, to=200, by=2)]%>%
++     str_extract(pattern = "[0-9]+")%>%
++     as.numeric()
++ }
+> 
+> 
+> #last touches
+> chart_scrap <- chart_scrap%>%
++   mutate(current = as.numeric(current),
++          last_week = as.numeric(last_week),
++          last_week_fill = replace_na(last_week, replace = 0))
+> 
+> #Writing file to csv for processing in rmd file
+> #This will saved a csv file for each scheduled iteration
+> 
+> #First creating new folder in blogdown folder structure
+> dir_path <- paste("auto_reporting_blogdown","content","post",
++                   paste0(Sys.Date(),"_charts_report"), sep = "\\")
+> 
+> dir.create(dir_path)
+Warning message:
+In dir.create(dir_path) :
+  cannot create dir 'auto_reporting_blogdown\content\post\2021-07-27_charts_report', reason 'No such file or directory'
+> 
+> #ssaving csv file to new folder
+> write_csv(x = chart_scrap, file = paste0(dir_path,"//",Sys.Date(),"_charts_report.csv"))
+Error in open.connection(file, "wb") : cannot open the connection
+Calls: write_csv ... write_delim -> stream_delim -> open -> open.connection
+In addition: Warning message:
+In open.connection(file, "wb") :
+  cannot open file 'auto_reporting_blogdown\content\post\2021-07-27_charts_report//2021-07-27_charts_report.csv': No such file or directory
+Execution halted

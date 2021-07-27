@@ -7,6 +7,7 @@ library(tidyr)
 library(stringr)
 library(readr)
 
+setwd("C:/henning/Scripts/R_Scripts/Automated_Reporting_Proj/auto_reporting_dyn_rmd")
 
 # Data Accessing Step ###################
 #Web scraping data with rvest
@@ -52,16 +53,18 @@ chart_scrap <- chart_scrap%>%
          last_week = as.numeric(last_week),
          last_week_fill = replace_na(last_week, replace = 0))
 
+
 #Writing file to csv for processing in rmd file
 #This will saved a csv file for each scheduled iteration
+# 
+# #First creating new folder in blogdown folder structure
+dir_path <- paste("auto_reporting_blogdown","content","post",
+                  paste0(Sys.Date(),"_charts_report"), sep = "\\")
 
-#First creating new folder in blogdown folder structure
-dir_path <- file.path("auto_reporting_blogdown","content","post",
-                      paste0(Sys.Date(),"_charts_report"))
 dir.create(dir_path)
 
 #ssaving csv file to new folder
-write_csv(x = chart_scrap, file = paste0(dir_path,"/",Sys.Date(),"_charts_report.csv"))
+write_csv(x = chart_scrap, file = paste0(dir_path,"//",Sys.Date(),"_charts_report.csv"))
 
 
 # Dynamic Creation of RMarkdown Document ###########################################
@@ -229,7 +232,7 @@ code_chunk4 <- paste("```{r table 2,echo=FALSE}",
 complete_doc <- paste(yaml_header,code_chunk1,markdown_body1, code_chunk2, markdown_body2,
                       code_chunk3, markdown_body3, code_chunk4, sep = "\n")
 
-write(complete_doc, 
+write(complete_doc,
       paste0(dir_path,"/",Sys.Date(),"_charts_report.Rmd"))
 
 #Set wd to the working directory of the blogdown page. This is necessary for blogdown::build_site() to run properly
