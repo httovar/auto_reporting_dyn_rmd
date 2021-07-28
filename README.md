@@ -1,1 +1,1 @@
-# auto_reporting_dyn_rmd
+# Dynimcally Writing RMarkdown Files
