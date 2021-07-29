@@ -74,6 +74,10 @@ write_csv(x = chart_scrap, file = paste0(dir_path,"//",Sys.Date(),"_charts_repor
 #At the end, these will be put together to a single string
 #and saved as .rmd in the newly created folder
 
+#Note that calling Sys.Date() now will save the date when the file is created. 
+#This will later on make it possible for files to keep the same names and dates 
+#when they are processed again at a different date.
+
 
 #Yaml Header
 yaml_header <- paste("---",
