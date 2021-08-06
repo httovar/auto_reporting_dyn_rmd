@@ -13,10 +13,7 @@ setwd(eval(parse(text = keyring::key_get("proj_wd"))))
 
 # Data Accessing Step ###################
 #Web scraping data with rvest
-#german_charts_path <- "https://www.offiziellecharts.de/charts"
-
-#Had to choose specific date because complete data is not available on Saturday
-german_charts_path <- "https://www.offiziellecharts.de/charts/single/for-date-1626460842000"
+german_charts_path <- "https://www.offiziellecharts.de/charts"
 
 de_page <- read_html(german_charts_path)
 
